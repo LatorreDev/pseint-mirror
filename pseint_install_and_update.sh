@@ -4,15 +4,6 @@ set -e
 
 trap 'handleError' ERR
 
-handleError() {
-  echo ""
-  echo "If you encountered an error, please consider fixing"
-  echo "the script for your environment and creating a pull"
-  echo "request instead of asking for support on GitHub or"
-  echo "the forum. The error message above should tell you"
-  echo "where and why the error happened."
-}
-
 #-----------------------------------------------------
 # Variables
 #-----------------------------------------------------
@@ -38,13 +29,12 @@ print() {
 
 showLogo() {
   print "${COLOR_BLUE}"
-  print "     _             _ _       "
-  print "    | | ___  _ __ | (_)_ __  "
-  print " _  | |/ _ \| '_ \| | | '_ \ "
-  print "| |_| | (_) | |_) | | | | | |"
-  print " \___/ \___/| .__/|_|_|_| |_|"
-  print "            |_|"
-  print ""
+  print "                    .__        __   "
+  print "______  ______ ____ |__| _____/  |_ "
+  print "\____ \/  ___// __ \|  |/    \   __\
+  print "|  |_> >___ \\  ___/|  |   |  \  |  
+  print "|   __/____  >\___  >__|___|  /__|  
+  print "|__|       \/     \/        \/      
   print "Linux Installer and Updater"
   print "${COLOR_RESET}"
 }
@@ -129,21 +119,6 @@ elif [[ $ARCHITECTURE =~ .*aarch.*|.*arm.* ]]; then
   exit 1
 elif [[ $ARCHITECTURE =~ .*i386.*|.*i686.* ]]; then
   showHelp "32-bit systems are not supported by Joplin, please search the forum (https://discourse.joplinapp.org/) for more information"
-  exit 1
-fi
-
-#-----------------------------------------------------
-print "Checking dependencies..."
-## Check if libfuse2 is present.
-if [[ $(command -v ldconfig) ]]; then
-  LIBFUSE=$(ldconfig -p | grep "libfuse.so.2" || echo '')
-fi
-if [[ $LIBFUSE == "" ]]; then
-  LIBFUSE=$(find /lib /usr/lib /lib64 /usr/lib64 /usr/local/lib -name "libfuse.so.2" 2>/dev/null | grep "libfuse.so.2" || echo '')
-fi
-if [[ $LIBFUSE == "" ]]; then
-  print "${COLOR_RED}Error: Can't get libfuse2 on system, please install libfuse2${COLOR_RESET}"
-  print "See https://joplinapp.org/help/faq/#desktop-application-will-not-launch-on-linux and https://github.com/AppImage/AppImageKit/wiki/FUSE for more information"
   exit 1
 fi
 
